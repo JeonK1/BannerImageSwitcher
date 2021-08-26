@@ -87,7 +87,25 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
         }
     }
 
-    private fun set_banner_by_page(page:Int){
+    private fun set_banner_by_page(page:Int) {
+        // move to valid switcher image function by image_list element type
+        if(image_list.isNotEmpty()){
+            when(image_list[0].javaClass.simpleName){
+                "String" -> set_banner_by_page_glide(page)
+                "Integer" -> set_banner_by_page_native(page)
+                else -> throw IllegalArgumentException("list type is illegal")
+            }
+        } else if(page<0 || page>=image_list.size) {
+            throw IllegalArgumentException("page value is illegal")
+        }
+    }
+
+    private fun set_banner_by_page_native(page:Int){
+        // switch banner image by page (with not use glide)
+        banner_image.setImageResource(image_list[page] as Int) // imageview 에 image_list[page] 대입
+    }
+
+    private fun set_banner_by_page_glide(page:Int){
         // switch banner image by page (with glide)
         Glide.with(context)
             .load(image_list[page])
