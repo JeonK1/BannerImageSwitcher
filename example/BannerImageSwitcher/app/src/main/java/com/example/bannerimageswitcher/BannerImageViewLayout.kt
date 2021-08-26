@@ -23,28 +23,27 @@ import java.util.*
 
 class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayout(context, attrs) {
 
-    lateinit var image_list:List<Any>
+    lateinit var image_list:List<Any> // image list
 
-    companion object{
-        val TAG = "BannerImageViewLayout"
-        var CUSTOM_NAMESPACE = ""
-        var IMAGE_SWITCH_INTERVAL = 5000L // 이미지 스위치되는 시간간격, default : 5초
-        var page = 0
+    companion object {
+        var CUSTOM_NAMESPACE = "" // current project namespace (for get custom xml attribute)
+        var IMAGE_SWITCH_INTERVAL = 5000L // image switch interval, default : 5초
+        var page = 0 // current page
     }
 
     init {
-        // xml 불러와서 화면 초기화
+        // xml init
         inflate(context, R.layout.custom_banner_layout, this)
 
-        // custom namespace 초기화
+        // custom namespace init
         CUSTOM_NAMESPACE = "http://schemas.android.com/apk/res/${context.packageName}"
 
-        // interval 값 초기화
+        // interval value init
         attrs.getAttributeValue(CUSTOM_NAMESPACE, "switch_interval")?.let{
             IMAGE_SWITCH_INTERVAL = it.toLong()
         }
 
-        // 타이머 초기화
+        // timer init
         var timer = getTimer()
         banner_image.setFactory {
             ImageView(context).apply {
@@ -52,26 +51,27 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
             }
         }
 
-        // 왼쪽 버튼 클릭
+        // left switch button clicked
         left_button.setOnClickListener {
-            banner_move_prev() // 이전 페이지 이동
+            banner_move_prev() // switch prev image
 
-            // 타이머 취소 및 초기화
+            // timer cancel, init with new instacne
             timer.cancel()
             timer = getTimer()
         }
 
-        // 오른쪽 버튼 클릭
+        // right switch button clicked
         right_button.setOnClickListener {
-            banner_move_next()  // 이전 페이지 이동
+            banner_move_next()  // switch next image
 
-            // 타이머 취소 및 초기화
+            // timer cancel, init with new instacne
             timer.cancel()
             timer = getTimer()
         }
     }
 
     fun set_image_list(list:List<Any>){
+        // set image list
         if(list.isNotEmpty()) {
             // if image_list is not empty
             when (list[0].javaClass.simpleName) {
@@ -88,7 +88,7 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
     }
 
     private fun set_banner_by_page(page:Int){
-        // banner 를 특정 page로 넘겨주기
+        // switch banner image by page (with glide)
         Glide.with(context)
             .load(image_list[page])
             .into(object: CustomTarget<Drawable>(){
@@ -106,7 +106,7 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
     }
 
     private fun banner_move_next(){
-        // banner 를 다음으로 넘겨주기
+        // banner image switch to next page
         if(++page > image_list.size-1)
             page = 0
         banner_image.inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_left) // image 전환 애니메이션
@@ -115,7 +115,7 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
     }
 
     private fun banner_move_prev() {
-        // banner 를 이전으로 넘겨주기
+        // banner image switch to prev page
         if(--page < 0)
             page = image_list.size-1
         banner_image.inAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right) // image 전환 애니메이션
@@ -124,7 +124,7 @@ class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayo
     }
 
     private fun getTimer(): Timer {
-        // IMAGE_SWITCH_INTERVAL 마다 banner_move_next() 를 수행하는 Timer 객체 반환
+        // get instance that call banner_move_next() when every IMAGE_SWITCH_INTERVAL millisecond
         val myHandler = Handler(Looper.getMainLooper()) {
             banner_move_next()
             true
