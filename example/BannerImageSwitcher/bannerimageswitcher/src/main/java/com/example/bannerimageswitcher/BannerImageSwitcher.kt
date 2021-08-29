@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.animation.AnimationUtils
+import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.custom_banner_layout.view.*
 import java.lang.IllegalArgumentException
 import java.util.*
 
-class BannerImageViewLayout(context: Context, attrs: AttributeSet): RelativeLayout(context, attrs) {
+class BannerImageSwitcher(context: Context, attrs: AttributeSet): RelativeLayout(context, attrs) {
 
     private lateinit var imageList:List<Any> // image list
 
