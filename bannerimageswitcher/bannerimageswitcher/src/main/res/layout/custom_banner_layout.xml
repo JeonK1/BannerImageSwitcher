@@ -7,8 +7,7 @@
     <ImageSwitcher
         android:id="@+id/banner_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:background="@drawable/ic_launcher_background" />
+        android:layout_height="wrap_content" />
 
     <ImageButton
         android:id="@+id/left_button"
