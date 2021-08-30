@@ -1,0 +1,3 @@
+rootProject.name = "BannerImageSwitcher"
+include ':app'
+include ':bannerimageswitcher'
