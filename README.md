@@ -26,7 +26,7 @@ Notice: This Library is not zero dependency, it has Glide dependency for can set
 2\. Add the dependency in your build.gradle(app) <br>
 ~~~
 	dependencies {
-		implementation 'com.github.User:Repo:Tag'
+		implementation 'com.github.JeonK1:BannerImageSwitcher:1.0.1'
 	}
 ~~~
 
